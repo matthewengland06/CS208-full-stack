@@ -6,18 +6,23 @@ block content
   ol
   each val in todos
     li
-      span= val.task + ' - '
-      if val.completed > 0
-        span Completed
-      else
-        span Not Completed
-      form(method='POST' action='/delete')
+      form(method='POST' action='/edit')
         input(type='hidden', name='id', value=val.id)
-        button(type='submit') Delete
+        input(type='text', name='task', value=val.task, required)
+        input(type='checkbox', name='completed', id='completed-' + val.id, checked=(val.completed > 0))
+        label(for='completed-' + val.id, style='margin-right: 10px;')
+          if val.completed > 0
+            | Completed 
+          else
+            | Not Completed
+        button(type='submit') Update
 
-  hr
+      form(method='POST' action='/delete')
+          input(type='hidden', name='id', value=val.id)
+          button.btn-outline.btn-delete(type='submit') Delete
+
+
   h2 Add a new task
-  form(method='POST' action='/create')
-    label(for='task') Task:
-    input(type='text', name='task', id='task', required)
-    button(type='submit') Create Task
+  form(method='POST' action='/create', class='create-form')
+    input(type='text', name='task', id='task', placeholder='Enter a new task', required)
+    button.btn-outline(type='submit') Create Task
